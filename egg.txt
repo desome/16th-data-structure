@@ -1,0 +1,63 @@
+int const eggs=10;
+int const floors=300+1;
+
+int x[eggs][floors]={0};
+int y[eggs][floors]={0};
+void initAnswers(){
+    // TODO
+	int i,j,k;
+	int min,tmp;
+	for(i=0;i<floors;i++)
+		x[0][i]=i;
+	for(i=1;i<eggs;i++)
+		x[i][0]=0;
+	for(i=1;i<eggs;i++)
+		x[i][1]=1;
+	for(i=1;i<eggs;i++)
+		for(j=2;j<floors;j++)
+		{
+			min=0;
+			tmp=0;
+			x[i][j]=floors+1;
+			for(k=1;k<=j;k++){
+				tmp=x[i-1][k-1]>x[i][j-k]?x[i-1][k-1]:x[i][j-k];
+				if(x[i][j]>tmp)
+				{
+					x[i][j]=tmp;
+					min=k;
+				}
+			}
+                                                x[i][j]+=1;
+			y[i][j]=min;
+		}
+}
+
+int nextTestFloor(int hFloor, int eggsLeft, int lastSurvival,int lastBreak){
+    // TODO
+
+	if(lastBreak-lastSurvival-1>1)
+	    {
+			if(!(eggsLeft-1))
+				return lastSurvival+1;
+			else
+				return y[eggsLeft-1][lastBreak-lastSurvival-1]+lastSurvival;
+		}
+	else if(lastBreak-lastSurvival-1==1)
+		return lastSurvival+1;
+	else
+	    return -1;
+}
+
+int canHandleFloors(int eggs, int numTries){
+    // TODO
+	int k=0;
+	while(x[eggs-1][k]<=numTries&&k<301){
+		k++;
+	}
+	return k-1;
+}
+
+int minTimesForBuilding(int eggs, int numFloors){
+    // TODO
+	return x[eggs-1][numFloors];
+}

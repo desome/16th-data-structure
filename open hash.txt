@@ -1,0 +1,86 @@
+template <class T>
+class OpenHashTable {
+private:
+	int(*hashfn)(T, int);
+	// other variables
+	// TODO
+	VecList<T> *sheet;
+	int number;
+	int conflict;
+public:
+	OpenHashTable() {
+		//default table size set as 47
+		// TODO
+		hashfn = NULL;
+		sheet = new VecList<T>[47];
+		number = 47;
+		conflict = 0;
+	}
+	OpenHashTable(int table_size) {
+		// pray that whatever's given to us is a prime. or else things can get real ugly.
+		// TODO
+		hashfn = NULL;
+		number = table_size;
+		sheet = new VecList<T>[number];
+		conflict = 0;
+	}
+	~OpenHashTable() {
+		// TODO
+		delete[] sheet;
+	}
+	void setHashFn(int(*f)(T, int)) {
+		if (hashfn == NULL)
+			hashfn = f;
+		else {
+			cout << "Cannot reset hash function." << endl;
+		}
+	}
+	bool isEmpty() {
+		// TODO
+		for (int i = 0; i < number; i++) {
+			if (sheet[i].Length())
+				return false;
+		}
+		return true;
+	}
+	bool searchData(T x) {
+		// TODO
+		int i;
+		i= hashfn(x, number);
+		return sheet[i].Locate(x);
+	}
+	void insertData(T x) {
+		// TODO
+		int i ;
+		i = hashfn(x, number);
+		if (!sheet[i].Locate(x))
+		{
+			if (sheet[i].Length())
+				conflict++;
+			sheet[i].InsertLast(x);
+		}
+		else 
+			conflict++;
+	}
+	void deleteData(T x) {
+		// TODO
+		int i = hashfn(x, number);
+		if (sheet[i].Locate(x))
+			sheet[i].Delete(sheet[i].Locate(x));
+	}
+	void printTable() {
+		for (int i = 0; i < number; i++) 
+		{
+			if (sheet[i].Length())
+			{
+				cout << "Cell " << i << ": ";
+				sheet[i].printList();
+				cout << endl;
+			}
+		}
+	}
+	int getCollisionCount() {
+		// TODO
+		return conflict;
+	}
+};
